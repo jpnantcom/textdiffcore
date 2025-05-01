@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using textdiffcore;
 
 namespace textdiffcore.DiffOutputGenerators
@@ -12,6 +13,8 @@ namespace textdiffcore.DiffOutputGenerators
         public string EqualAttributeValue {get;set;}
         public string TagType {get; set;}
 
+
+
         public HTMLDiffOutputGenerator(string tagType = "span", string attributeNae = "", string addAttributeValue = "", string removeAttributeValue = "", string equalAttributeValue = "")
         {
             TagType = tagType;
@@ -23,19 +26,21 @@ namespace textdiffcore.DiffOutputGenerators
 
         public string GenerateOutput(List<Diffrence> diffrences)
         {
-            string output = "";
-            foreach (Diffrence d in diffrences)
+            StringBuilder sb = new();
+            for (int i = 0; i < diffrences.Count; i++)
             {
-                output += GenerateOutput(d);
+                sb.AppendLine(GenerateHTMLElement(diffrences[i], i));
             }
-            return output;
+
+            return sb.ToString();
         }
          
         public string GenerateOutput(Diffrence diffrence)
         {            
-            return GenerateHTMLElement(diffrence).Replace(Environment.NewLine,Environment.NewLine+"<br/>");
+            return GenerateHTMLElement(diffrence);
         }
-        private string GetAttributeValue(Diffrence d)
+
+		private string GetAttributeValue(Diffrence d)
         {
             switch (d.action)
             {
@@ -45,7 +50,7 @@ namespace textdiffcore.DiffOutputGenerators
                 default: return "";
             }
         }
-        private string GenerateHTMLElement(Diffrence d)
+        private string GenerateHTMLElement(Diffrence d, int? index = null)
         {
             if (string.IsNullOrEmpty(GetAttributeValue(d)))
             {
@@ -53,7 +58,8 @@ namespace textdiffcore.DiffOutputGenerators
             }
             else
             {
-                return "<"+TagType+" "+AttributeName+"=\""+GetAttributeValue(d)+"\">"+d.value+"</"+TagType+">";
+                var indexAttribute = index == null ? null : $"index=\"{index.Value}\"";
+                return $"<{this.TagType} {this.AttributeName}=\"{this.GetAttributeValue(d)}\" {indexAttribute}>\r\n{d.value}\r\n</{this.TagType}>";
             }
         }
 
