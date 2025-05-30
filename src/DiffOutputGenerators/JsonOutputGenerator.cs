@@ -13,7 +13,12 @@ public class JsonOutputGenerator : IDiffOutputGenerator
 	/// </summary>
 	public bool IsRemoveEqual { get; set; }
 
-	public string GenerateOutput(List<Diffrence> diffrences)
+    /// <summary>
+    /// Whether to include index in the output
+    /// </summary>
+    public bool IsIncludeIndex { get; set; } = true;
+
+    public string GenerateOutput(List<Diffrence> diffrences)
 	{
 		var ja = new JsonArray();
 		for (int i = 0; i < diffrences.Count; i++)
@@ -41,7 +46,7 @@ public class JsonOutputGenerator : IDiffOutputGenerator
 		node["action"] = diff.action.ToString();
 		node["value"] = diff.value;
 
-		if (index != null)
+		if (index != null && this.IsIncludeIndex)
 		{
 			node["index"] = index;
 		}
