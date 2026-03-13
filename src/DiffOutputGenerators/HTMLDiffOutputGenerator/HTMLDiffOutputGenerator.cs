@@ -7,11 +7,11 @@ namespace textdiffcore.DiffOutputGenerators
 {
     public class HTMLDiffOutputGenerator : IDiffOutputGenerator
     {
-        public string AttributeName {get;set;}
-        public string AddAttributeValue {get;set;}
-        public string RemoveAttributeValue {get;set;}
-        public string EqualAttributeValue {get;set;}
-        public string TagType {get; set;}
+        public string AttributeName { get; set; }
+        public string AddAttributeValue { get; set; }
+        public string RemoveAttributeValue { get; set; }
+        public string EqualAttributeValue { get; set; }
+        public string TagType { get; set; }
 
 
 
@@ -34,19 +34,19 @@ namespace textdiffcore.DiffOutputGenerators
 
             return sb.ToString();
         }
-         
+
         public string GenerateOutput(Diffrence diffrence)
-        {            
+        {
             return GenerateHTMLElement(diffrence);
         }
 
-		private string GetAttributeValue(Diffrence d)
+        private string GetAttributeValue(Diffrence d)
         {
             switch (d.action)
             {
-                case TextDiffAction.Add:return AddAttributeValue;
-                case TextDiffAction.Remove:return RemoveAttributeValue;
-                case TextDiffAction.Equal:return EqualAttributeValue;
+                case TextDiffAction.Add: return AddAttributeValue;
+                case TextDiffAction.Remove: return RemoveAttributeValue;
+                case TextDiffAction.Equal: return EqualAttributeValue;
                 default: return "";
             }
         }

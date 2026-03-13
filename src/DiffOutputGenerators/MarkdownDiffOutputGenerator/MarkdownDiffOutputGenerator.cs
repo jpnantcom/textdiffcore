@@ -6,21 +6,21 @@ namespace textdiffcore.DiffOutputGenerators
 {
     public class MarkdownDiffOutputGenerator : IDiffOutputGenerator
     {
-        List<char> esc = new List<char>(){' ', '\n', '\r', '\t'};
-        public string AddMDStart {get;set;}
-        public string AddMDEnd {get;set;}
+        List<char> esc = new List<char>() { ' ', '\n', '\r', '\t' };
+        public string AddMDStart { get; set; }
+        public string AddMDEnd { get; set; }
 
-        public string RemoveMDStart {get;set;}
-        public string RemoveMDEnd {get;set;}
+        public string RemoveMDStart { get; set; }
+        public string RemoveMDEnd { get; set; }
 
-        public string EqualMDStart {get;set;}
-        public string EqualMDEnd {get;set;}
+        public string EqualMDStart { get; set; }
+        public string EqualMDEnd { get; set; }
 
         public MarkdownDiffOutputGenerator(string AddMD = "**", string RemoveMD = "**~~", string EqualMD = "")
-         : this (AddMD,ReverseString(AddMD),RemoveMD,ReverseString(RemoveMD),EqualMD,ReverseString(EqualMD))
-        {   }
+         : this(AddMD, ReverseString(AddMD), RemoveMD, ReverseString(RemoveMD), EqualMD, ReverseString(EqualMD))
+        { }
 
-        private MarkdownDiffOutputGenerator(string AddMDPre = "",string AddMDPost = "", string RemoveMDPre = "", string RemoveMDPost = "", string EqualMDPre = "", string EqualMDPost = "")
+        private MarkdownDiffOutputGenerator(string AddMDPre = "", string AddMDPost = "", string RemoveMDPre = "", string RemoveMDPost = "", string EqualMDPre = "", string EqualMDPost = "")
         {
             AddMDStart = AddMDPre;
             AddMDEnd = AddMDPost;
@@ -42,17 +42,17 @@ namespace textdiffcore.DiffOutputGenerators
 
             List<string> mdElements = new List<string>();
             string mdElement;
-            for (int i = 0; i<diffrences.Count; i++)
+            for (int i = 0; i < diffrences.Count; i++)
             {
                 mdElement = GenerateOutput(diffrences[i]);
                 mdElements.Add(mdElement);
             }
 
-            for (int i = 0; i<mdElements.Count; i++)
+            for (int i = 0; i < mdElements.Count; i++)
             {
-                if ((i+1) < mdElements.Count)
+                if ((i + 1) < mdElements.Count)
                 {
-                    if(!esc.Contains(mdElements[i+1][0]) & !esc.Contains(mdElements[i][mdElements[i].Length-1]))
+                    if (!esc.Contains(mdElements[i + 1][0]) & !esc.Contains(mdElements[i][mdElements[i].Length - 1]))
                     {
                         mdElements[i] = mdElements[i] + " ";
                     }
@@ -67,7 +67,7 @@ namespace textdiffcore.DiffOutputGenerators
             return output;
         }
         public string GenerateOutput(Diffrence diffrence)
-        {            
+        {
             return GenerateMDElement(diffrence);
         }
 
@@ -78,24 +78,24 @@ namespace textdiffcore.DiffOutputGenerators
 
             switch (d.action)
             {
-                case TextDiffAction.Add: 
-                    start = AddMDStart; 
-                    end = AddMDEnd; 
-                break;
+                case TextDiffAction.Add:
+                    start = AddMDStart;
+                    end = AddMDEnd;
+                    break;
                 case TextDiffAction.Remove:
                     start = RemoveMDStart;
                     end = RemoveMDEnd;
-                break;
-                case TextDiffAction.Equal: 
+                    break;
+                case TextDiffAction.Equal:
                     start = EqualMDStart;
                     end = EqualMDEnd;
-                break; 
+                    break;
                 default: throw new InvalidOperationException("Diffrence.action is not set to valid value");
             }
 
             string output = d.value;
 
-            if (output[0]==' ')
+            if (output[0] == ' ')
             {
                 output = output.Insert(1, start);
             }
@@ -104,7 +104,7 @@ namespace textdiffcore.DiffOutputGenerators
                 output = start + output;
             }
 
-            if (output[output.Length-1]==' ')
+            if (output[output.Length - 1] == ' ')
             {
                 output = output.Insert(output.Length - 1, end);
             }
@@ -115,7 +115,7 @@ namespace textdiffcore.DiffOutputGenerators
 
             return output;
         }
-        
+
 
     }
 }

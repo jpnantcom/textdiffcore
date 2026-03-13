@@ -7,7 +7,7 @@ using textdiffcore.TextDiffEngine.GoogleMyers;
 namespace textdiffcore.TextDiffEngine
 {
     public class MyersDiff : ITextDiffEngine
-    {   
+    {
         public diff_match_patch InnerDMP
         {
             get
@@ -19,7 +19,7 @@ namespace textdiffcore.TextDiffEngine
                 dmp = value;
             }
         }
-        
+
         private diff_match_patch dmp;
 
         public MyersDiff()
@@ -30,24 +30,24 @@ namespace textdiffcore.TextDiffEngine
         public List<Diffrence> GenerateDiff(string oldText, string newText)
         {
             List<Diffrence> InnerList = new List<Diffrence>();
-            
+
             List<Diff> ld = dmp.diff_main(oldText, newText);
-            
+
             foreach (Diff d in ld)
             {
                 switch (d.operation)
                 {
                     case Operation.INSERT:
-                        InnerList.Add(new Diffrence(){action = TextDiffAction.Add, value = d.text});
+                        InnerList.Add(new Diffrence() { action = TextDiffAction.Add, value = d.text });
                         break;
                     case Operation.DELETE:
-                        InnerList.Add(new Diffrence(){action = TextDiffAction.Remove, value = d.text});
+                        InnerList.Add(new Diffrence() { action = TextDiffAction.Remove, value = d.text });
                         break;
                     case Operation.EQUAL:
-                        InnerList.Add(new Diffrence(){action = TextDiffAction.Equal, value = d.text});
+                        InnerList.Add(new Diffrence() { action = TextDiffAction.Equal, value = d.text });
                         break;
-                    default: throw new InvalidOperationException("Error in MyersDiff.ld.operation");                    
-                }                
+                    default: throw new InvalidOperationException("Error in MyersDiff.ld.operation");
+                }
             }
             return InnerList;
         }

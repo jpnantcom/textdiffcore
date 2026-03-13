@@ -14,9 +14,9 @@ namespace textdiffcore
         }
         private ITextDiffEngine diffEngine;
         private IDiffOutputGenerator outputGenEngine;
-        
+
         private RenderMode rMode;
-        public List<Diffrence> InnerList {get; private set;}
+        public List<Diffrence> InnerList { get; private set; }
 
         public TextDiff(ITextDiffEngine engine, IDiffOutputGenerator outputEngine, RenderMode renderMode = RenderMode.ContextAware)
         {
@@ -25,14 +25,14 @@ namespace textdiffcore
             rMode = renderMode;
         }
 
-        public List<Diffrence> GenerateDiffList (string oldText, string newText)
+        public List<Diffrence> GenerateDiffList(string oldText, string newText)
         {
-            return diffEngine.GenerateDiff(oldText,newText);
+            return diffEngine.GenerateDiff(oldText, newText);
         }
         public string GenerateDiffOutput(string oldText, string newText)
         {
             string output = "";
-            InnerList = GenerateDiffList(oldText,newText);
+            InnerList = GenerateDiffList(oldText, newText);
 
             if (rMode == RenderMode.ElementOnly)
             {
@@ -45,7 +45,7 @@ namespace textdiffcore
             {
                 output = outputGenEngine.GenerateOutput(InnerList);
             }
-            
+
             return output;
         }
     }
